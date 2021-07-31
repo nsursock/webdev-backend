@@ -15,7 +15,7 @@ app.use(express.static("."), function (req, res, next) {
   next();
 });
 
-const YOUR_DOMAIN = process.env.EXPRESS_FRONTEND_URL + "/";
+const YOUR_DOMAIN = process.env.EXPRESS_FRONTEND_URL;
 
 app.post("/payment", bodyParser.json(), async (req, res) => {
   const session = await stripe.checkout.sessions.create({
@@ -25,8 +25,8 @@ app.post("/payment", bodyParser.json(), async (req, res) => {
         price_data: {
           currency: req.body.currency,
           product_data: {
-            name: "WebDev Payment - Nicolas Sursock",
-            images: ["https://source.unsplash.com/500x500/?web"],
+            name: "WebDev - Nicolas Sursock",
+            images: ["https://source.unsplash.com/500x500/?abstract"],
           },
           unit_amount: req.body.amount * 100,
         },
@@ -34,8 +34,8 @@ app.post("/payment", bodyParser.json(), async (req, res) => {
       },
     ],
     mode: "payment",
-    success_url: `${YOUR_DOMAIN}?success=true`,
-    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    success_url: `${YOUR_DOMAIN}/thanks`,
+    cancel_url: `${YOUR_DOMAIN}`,
   });
 
   res.json({ id: session.id });
